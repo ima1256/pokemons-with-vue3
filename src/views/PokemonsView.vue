@@ -4,9 +4,15 @@ import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useGetData } from '@/composables/getData'
 
+import { useFavoritesStore } from '../store/favorites';
+
 //const pokemons = ref([])
 
+const useFavorites = useFavoritesStore()
+
 const { getData, data, loading } = useGetData()
+
+const { isFavorite } = useFavorites
 
 // const getData = async () => {
 //     try {
@@ -17,6 +23,8 @@ const { getData, data, loading } = useGetData()
 //         console.log(err)
 //     }
 // }
+
+
 
 getData('https://pokeapi.co/api/v2/pokemon')
 
@@ -31,7 +39,16 @@ getData('https://pokeapi.co/api/v2/pokemon')
 
         <div v-for="pokemon in data.results" :key="pokemon.name" class="card mb-2">
             <div class="card-body h-20">
-                <router-link :to="`/pokemons/${pokemon.name}`" class="card-title text-middle">{{ pokemon.name }}</router-link>
+                <router-link :to="`/pokemons/${pokemon.name}`" class="card-title text-middle">
+                    
+                    {{ pokemon.name }}
+                
+                </router-link>
+
+                <p>
+                    <i v-if="isFavorite(pokemon)" >Favorite</i>
+                </p>
+               
             </div>
         </div>
 
